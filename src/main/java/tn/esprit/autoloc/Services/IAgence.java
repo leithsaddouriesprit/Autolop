@@ -9,4 +9,5 @@ public interface IAgence {
     void supprimerAgence(long idAgence);
     List<Agence> recupererAgences();
     Agence recupererAgenceById(long idAgence);
+    Agence modifierAgence(long idAgence, Agence agence);
 }
