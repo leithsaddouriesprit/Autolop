@@ -34,4 +34,9 @@ public class ClientServiceImpl implements IClient{
     public Client recupererClientById(long idClient) {
         return clientRepo.findById(idClient).orElseThrow();
     }
+
+    @Override
+    public Client updateClient(Client client) {
+        return clientRepo.save(client);
+    }
 }

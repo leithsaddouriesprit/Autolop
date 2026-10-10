@@ -11,5 +11,7 @@ public interface IClient {
     void supprimerClient(long idClient);
     List<Client> recupererClients();
     Client recupererClientById(long idClient);
+    Client updateClient(Client client);
+
 
 }
