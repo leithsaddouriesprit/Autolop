@@ -9,4 +9,5 @@ public interface IEmploye {
     void supprimerEmploye(long idEmploye);
     List<Employe> recupererEmployes();
     Employe recupererEmployeById(long idEmploye);
+    Employe modifierEmploye(long idEmploye, Employe employe);
 }
