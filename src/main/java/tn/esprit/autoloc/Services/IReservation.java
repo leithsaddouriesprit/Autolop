@@ -9,5 +9,5 @@ public interface IReservation {
     void supprimerReservation(long idReservation);
     List<Reservation> recupererReservations();
     Reservation recupererReservationById(long idReservation);
-    Reservation modifierReservation(long idReservation, Reservation reservation);
+    Reservation updateReservation(Reservation reservation);
 }

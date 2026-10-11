@@ -48,9 +48,12 @@ public class ContratServiceImpl implements IContrat {
 
     @Override
     @Transactional
-    public Contrat modifierContrat(long idContrat, Contrat contrat) {
-        Contrat existant = recupererContratById(idContrat);
+    public Contrat updateContrat(Contrat contrat) {
         validerContrat(contrat);
+        if (contrat.getIdContrat() == null) {
+            throw new IllegalArgumentException("L'identifiant est obligatoire pour la mise à jour");
+        }
+        Contrat existant = recupererContratById(contrat.getIdContrat());
         existant.setDateSignature(contrat.getDateSignature());
         existant.setMontantTotal(contrat.getMontantTotal());
         existant.setValide(contrat.isValide());

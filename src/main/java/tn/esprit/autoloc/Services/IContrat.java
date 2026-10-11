@@ -9,5 +9,5 @@ public interface IContrat {
     void supprimerContrat(long idContrat);
     List<Contrat> recupererContrats();
     Contrat recupererContratById(long idContrat);
-    Contrat modifierContrat(long idContrat, Contrat contrat);
+    Contrat updateContrat(Contrat contrat);
 }

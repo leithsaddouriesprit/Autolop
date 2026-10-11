@@ -49,7 +49,11 @@ public class ClientServiceImpl implements IClient {
     @Override
     @Transactional
     public Client updateClient(Client client) {
-        Client existant = recupererClientById(client.getIdClient());        validerClient(client);
+        validerClient(client);
+        if (client.getIdClient() == null) {
+            throw new IllegalArgumentException("L'identifiant est obligatoire pour la mise à jour");
+        }
+        Client existant = recupererClientById(client.getIdClient());
         existant.setNom(client.getNom());
         existant.setPrenom(client.getPrenom());
         existant.setEmail(client.getEmail());

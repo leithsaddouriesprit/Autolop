@@ -9,5 +9,5 @@ public interface IEquipement {
     void supprimerEquipement(long idEquipement);
     List<Equipement> recupererEquipements();
     Equipement recupererEquipementById(long idEquipement);
-    Equipement modifierEquipement(long idEquipement, Equipement equipement);
+    Equipement updateEquipement(Equipement equipement);
 }

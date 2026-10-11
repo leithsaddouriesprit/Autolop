@@ -48,9 +48,12 @@ public class ReservationServiceImpl implements IReservation {
 
     @Override
     @Transactional
-    public Reservation modifierReservation(long idReservation, Reservation reservation) {
-        Reservation existant = recupererReservationById(idReservation);
+    public Reservation updateReservation(Reservation reservation) {
         validerReservation(reservation);
+        if (reservation.getIdReservation() == null) {
+            throw new IllegalArgumentException("L'identifiant est obligatoire pour la mise à jour");
+        }
+        Reservation existant = recupererReservationById(reservation.getIdReservation());
         existant.setDateDebut(reservation.getDateDebut());
         existant.setDateFin(reservation.getDateFin());
         existant.setStatut(reservation.getStatut());

@@ -48,9 +48,12 @@ public class AgenceServiceImpl implements IAgence {
 
     @Override
     @Transactional
-    public Agence modifierAgence(long idAgence, Agence agence) {
-        Agence existant = recupererAgenceById(idAgence);
+    public Agence updateAgence(Agence agence) {
         validerAgence(agence);
+        if (agence.getIdAgence() == null) {
+            throw new IllegalArgumentException("L'identifiant est obligatoire pour la mise à jour");
+        }
+        Agence existant = recupererAgenceById(agence.getIdAgence());
         existant.setNom(agence.getNom());
         existant.setVille(agence.getVille());
         existant.setAdresse(agence.getAdresse());

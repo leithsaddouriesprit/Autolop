@@ -9,5 +9,5 @@ public interface IVehicules {
     void supprimerVehicule(long idVehicule);
     List<Vehicules> recupererVehicules();
     Vehicules recupererVehiculeById(long idVehicule);
-    Vehicules modifierVehicule(long idVehicule, Vehicules vehicule);
+    Vehicules updateVehicule(Vehicules vehicule);
 }

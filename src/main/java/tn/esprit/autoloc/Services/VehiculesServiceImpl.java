@@ -48,9 +48,12 @@ public class VehiculesServiceImpl implements IVehicules {
 
     @Override
     @Transactional
-    public Vehicules modifierVehicule(long idVehicule, Vehicules vehicule) {
-        Vehicules existant = recupererVehiculeById(idVehicule);
+    public Vehicules updateVehicule(Vehicules vehicule) {
         validerVehicule(vehicule);
+        if (vehicule.getIdVehicule() == null) {
+            throw new IllegalArgumentException("L'identifiant est obligatoire pour la mise à jour");
+        }
+        Vehicules existant = recupererVehiculeById(vehicule.getIdVehicule());
         existant.setImmatriculation(vehicule.getImmatriculation());
         existant.setMarque(vehicule.getMarque());
         existant.setModele(vehicule.getModele());

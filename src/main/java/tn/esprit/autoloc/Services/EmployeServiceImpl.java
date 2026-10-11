@@ -48,9 +48,12 @@ public class EmployeServiceImpl implements IEmploye {
 
     @Override
     @Transactional
-    public Employe modifierEmploye(long idEmploye, Employe employe) {
-        Employe existant = recupererEmployeById(idEmploye);
+    public Employe updateEmploye(Employe employe) {
         validerEmploye(employe);
+        if (employe.getIdEmploye() == null) {
+            throw new IllegalArgumentException("L'identifiant est obligatoire pour la mise à jour");
+        }
+        Employe existant = recupererEmployeById(employe.getIdEmploye());
         existant.setNom(employe.getNom());
         existant.setPrenom(employe.getPrenom());
         existant.setRole(employe.getRole());

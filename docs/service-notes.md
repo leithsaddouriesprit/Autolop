@@ -11,7 +11,7 @@ Les noms du projet existant sont conservés : `Entities`, `Repositories`, `Servi
 | create(entite) | ajouterEntite(entite) |
 | findById(id) | recupererEntiteById(id) |
 | findAll() | recupererEntites() |
-| update(id, entite) | modifierEntite(id, entite) |
+| update(id, entite) | updateEntite(entite), identifiant porté par l’objet |
 | deleteById(id) | supprimerEntite(id) |
 
 Chaque création refuse un identifiant déjà renseigné. Les lectures par identifiant et les suppressions lèvent `ResourceNotFoundException` lorsque la ressource n'existe pas. Une modification charge l'entité existante et recopie ses champs simples, sans changer l'identifiant ni les associations. Il s'agit d'une modification complète des champs simples, pas d'un PATCH : les champs obligatoires doivent être fournis.
@@ -67,7 +67,7 @@ Les données invalides déclenchent `IllegalArgumentException` avec un message e
 
 Un objet d'entrée null est aussi refusé. Les contraintes d'unicité restent portées par la base. La validation déclarative et les opérations d'affectation entre entités appartiennent aux ateliers suivants.
 
-La relation `Contrat.paiements` possède déjà `cascade = ALL`, donc la suppression JPA d'un contrat cascade vers ses paiements. La collection n'est pas remplacée dans `modifierContrat`. Une réservation qui référence encore le contrat peut néanmoins empêcher sa suppression par contrainte de clé étrangère ; les opérations de désaffectation seront traitées avec la gestion des liens. Aucune méthode de suppression en lot n'est utilisée.
+La relation `Contrat.paiements` possède déjà `cascade = ALL`, donc la suppression JPA d'un contrat cascade vers ses paiements. La collection n'est pas remplacée dans `updateContrat`. Une réservation qui référence encore le contrat peut néanmoins empêcher sa suppression par contrainte de clé étrangère ; les opérations de désaffectation seront traitées avec la gestion des liens. Aucune méthode de suppression en lot n'est utilisée.
 
 ## C. Messages d'erreur du conteneur
 
@@ -156,3 +156,23 @@ bash mvnw spring-boot:run
 ```
 
 Vérifier que MySQL est lancé et que la configuration locale convient. Le journal doit contenir `Found 9 JPA repository interfaces` puis `Started AutolocApplication`. Conserver la capture du démarrage et les constats Sonar réellement obtenus pour le rendu.
+
+## Contrôleurs REST et mise à jour par objet
+
+Les huit contrôleurs complémentaires reprennent le modèle de ClientController dans le package `RestController`. Le contrôleur injecte l'interface du service avec `@RequiredArgsConstructor`.
+
+Les huit services modifiables utilisent maintenant `updateEntite(entite)` : l'objet JSON doit inclure son identifiant (`idAgence`, `idClient`, `idContrat`, `idEmploye`, `idEquipement`, `idMaintenance`, `idReservation` ou `idVehicule`). La méthode valide les données, refuse un identifiant null, charge l'entité existante et copie uniquement ses champs simples. Les associations restent conservées. Cela remplace la signature précédente `modifierEntite(id, entite)`.
+
+| Entité | Préfixe URL | Suffixe des opérations |
+| --- | --- | --- |
+| Agence | /api/Agence | Agence |
+| Client | /api/Client | Client |
+| Contrat | /api/Contrat | Contrat |
+| Employe | /api/Employe | Employe |
+| Equipement | /api/Equipement | Equipement |
+| Maintenance | /api/Maintenance | Maintenance |
+| Reservation | /api/Reservation | Reservation |
+| Vehicules | /api/Vehicule | Vehicule |
+| Paiement | /api/Paiement | Paiement, lectures uniquement |
+
+Pour chaque entité modifiable : `POST /AddEntite`, `GET /GetAll`, `GET /GetById/{id}`, `PUT /updateEntite`, `DELETE /deleteEntite/{id}` sous son préfixe. Paiement expose uniquement les deux GET. Exemple : `PUT /api/Agence/updateAgence` avec `idAgence` dans le corps JSON et tous les champs simples obligatoires.

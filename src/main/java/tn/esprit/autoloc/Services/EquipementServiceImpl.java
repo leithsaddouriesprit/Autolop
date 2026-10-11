@@ -48,9 +48,12 @@ public class EquipementServiceImpl implements IEquipement {
 
     @Override
     @Transactional
-    public Equipement modifierEquipement(long idEquipement, Equipement equipement) {
-        Equipement existant = recupererEquipementById(idEquipement);
+    public Equipement updateEquipement(Equipement equipement) {
         validerEquipement(equipement);
+        if (equipement.getIdEquipement() == null) {
+            throw new IllegalArgumentException("L'identifiant est obligatoire pour la mise à jour");
+        }
+        Equipement existant = recupererEquipementById(equipement.getIdEquipement());
         existant.setLibelle(equipement.getLibelle());
         return equipementRepo.save(existant);
     }

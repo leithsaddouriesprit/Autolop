@@ -9,5 +9,5 @@ public interface IMaintenance {
     void supprimerMaintenance(long idMaintenance);
     List<Maintenance> recupererMaintenances();
     Maintenance recupererMaintenanceById(long idMaintenance);
-    Maintenance modifierMaintenance(long idMaintenance, Maintenance maintenance);
+    Maintenance updateMaintenance(Maintenance maintenance);
 }

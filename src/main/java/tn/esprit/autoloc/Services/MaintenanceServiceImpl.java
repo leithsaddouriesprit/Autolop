@@ -48,9 +48,12 @@ public class MaintenanceServiceImpl implements IMaintenance {
 
     @Override
     @Transactional
-    public Maintenance modifierMaintenance(long idMaintenance, Maintenance maintenance) {
-        Maintenance existant = recupererMaintenanceById(idMaintenance);
+    public Maintenance updateMaintenance(Maintenance maintenance) {
         validerMaintenance(maintenance);
+        if (maintenance.getIdMaintenance() == null) {
+            throw new IllegalArgumentException("L'identifiant est obligatoire pour la mise à jour");
+        }
+        Maintenance existant = recupererMaintenanceById(maintenance.getIdMaintenance());
         existant.setDateDebut(maintenance.getDateDebut());
         existant.setDateFin(maintenance.getDateFin());
         existant.setDescription(maintenance.getDescription());
