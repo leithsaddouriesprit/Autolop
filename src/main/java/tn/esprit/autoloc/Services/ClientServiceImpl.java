@@ -48,9 +48,8 @@ public class ClientServiceImpl implements IClient {
 
     @Override
     @Transactional
-    public Client modifierClient(long idClient, Client client) {
-        Client existant = recupererClientById(idClient);
-        validerClient(client);
+    public Client updateClient(Client client) {
+        Client existant = recupererClientById(client.getIdClient());        validerClient(client);
         existant.setNom(client.getNom());
         existant.setPrenom(client.getPrenom());
         existant.setEmail(client.getEmail());
@@ -83,9 +82,6 @@ public class ClientServiceImpl implements IClient {
             throw new IllegalArgumentException("Client : dateInscription obligatoire");
         }
     }
-
-    @Override
-    public Client updateClient(Client client) {
-        return clientRepo.save(client);
-    }
 }
+
+
