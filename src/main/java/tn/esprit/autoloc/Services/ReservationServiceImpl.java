@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.autoloc.Entities.Reservation;
+import tn.esprit.autoloc.Entities.StatutReservation;
 import tn.esprit.autoloc.Repositories.ReservationRepo;
 import tn.esprit.autoloc.exception.ResourceNotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -58,6 +60,17 @@ public class ReservationServiceImpl implements IReservation {
         existant.setDateFin(reservation.getDateFin());
         existant.setStatut(reservation.getStatut());
         return reservationRepo.save(existant);
+    }
+
+    @Override
+    @Transactional
+    public void terminerReservationsExpirees() {
+        List<Reservation> reservations = reservationRepo.findByStatutAndDateFinBefore(
+                StatutReservation.CONFIRMEE, LocalDate.now());
+        for (Reservation reservation : reservations) {
+            reservation.setStatut(StatutReservation.TERMINEE);
+        }
+        reservationRepo.saveAll(reservations);
     }
 
     private void validerReservation(Reservation reservation) {

@@ -10,4 +10,5 @@ public interface IReservation {
     List<Reservation> recupererReservations();
     Reservation recupererReservationById(long idReservation);
     Reservation updateReservation(Reservation reservation);
+    void terminerReservationsExpirees();
 }
