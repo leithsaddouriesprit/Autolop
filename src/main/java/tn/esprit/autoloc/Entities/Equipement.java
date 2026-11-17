@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +12,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Equipement {
 
     @Id
@@ -22,5 +22,6 @@ public class Equipement {
     private String libelle;
 
     @ManyToMany(mappedBy = "equipements", fetch = FetchType.LAZY)
-    private Set<Vehicules> vehicules;
+    @JsonIgnore
+    private Set<Vehicule> vehicules;
 }

@@ -4,7 +4,7 @@
 
 Neuf interfaces et neuf implémentations sont présentes dans `tn.esprit.autoloc.Services`. Les huit services modifiables exposent cinq méthodes ; `IPaiement` expose seulement les deux lectures.
 
-Les noms du projet existant sont conservés : `Entities`, `Repositories`, `Services`, interfaces `IClient`, `IContrat`, repositories `ClientRepo`, `ContratRepo`, entité `Vehicules`. Il s'agit d'une adaptation du support, qui utilise des packages minuscules, `I…Service`, `I…Repository` et des méthodes en anglais. Le comportement demandé est implémenté, mais le nommage n'est donc pas identique à la convention littérale du support.
+Les noms du projet existant sont conservés : `Entities`, `Repositories`, `Services`, interfaces `IClient`, `IContrat`, repositories `ClientRepo`, `ContratRepo`, entité `Vehicule` (anciennement `Vehicules` ; la table `Vehicules` est conservée avec `@Table`). Il s'agit d'une adaptation du support, qui utilise des packages minuscules, `I…Service`, `I…Repository` et des méthodes en anglais. Le comportement demandé est implémenté, mais le nommage n'est donc pas identique à la convention littérale du support.
 
 | Support | Méthode dans ce projet |
 | --- | --- |
@@ -45,7 +45,7 @@ L'expérience temporaire d'injection par attribut reste à réaliser dans Intell
 | MaintenanceServiceImpl | IMaintenance | MaintenanceRepo | Constructeur ; dépendance explicite et finale |
 | PaiementServiceImpl | IPaiement | PaiementRepo | Constructeur ; lectures uniquement |
 | ReservationServiceImpl | IReservation | ReservationRepo | Constructeur ; dépendance explicite et finale |
-| VehiculesServiceImpl | IVehicules | VehiculesRepo | Constructeur ; dépendance explicite et finale |
+| VehiculeServiceImpl | IVehicule | VehiculeRepo | Constructeur ; dépendance explicite et finale |
 
 Spring Data fournit un proxy pour chaque interface repository. Le service dépend de cette abstraction et ne crée aucun repository avec `new`.
 
@@ -59,7 +59,7 @@ Les données invalides déclenchent `IllegalArgumentException` avec un message e
 | Client | Nom, prénom, email, téléphone et numéro de permis non vides ; date d'inscription présente |
 | Employe | Nom et prénom non vides ; rôle présent |
 | Equipement | Libellé non vide ; aucune quantité n'existe dans le modèle |
-| Vehicules | Immatriculation, marque et modèle non vides ; catégorie, statut et tarif présents ; tarif >= 0 |
+| Vehicule | Immatriculation, marque et modèle non vides ; catégorie, statut et tarif présents ; tarif >= 0 |
 | Reservation | Dates et statut présents ; dateFin >= dateDebut |
 | Contrat | Date de signature et montant présents ; montantTotal >= 0 |
 | Maintenance | Dates présentes, description non vide ; dateFin >= dateDebut ; aucun coût n'existe dans le modèle |
@@ -101,7 +101,7 @@ Les anomalies ci-dessous ont été constatées par lecture du code du dépôt et
 | ClientServiceImpl : imports HashSet et Set inutilisés | S1128 ; imports sans usage | Suppression des deux imports |
 | IClient : imports Agence et Set inutilisés | S1128 ; types absents des signatures | Suppression des deux imports |
 | PaiementRepo : import Equipement inutilisé | S1128 ; le repository porte sur Paiement | Suppression de l'import |
-| VehiculesRepo : import Equipement inutilisé | S1128 ; le repository porte sur Vehicules | Suppression de l'import |
+| VehiculeRepo (alors nommé VehiculesRepo) : import Equipement inutilisé | S1128 ; le repository porte sur Vehicule | Suppression de l'import |
 
 Ces quatre anomalies correspondent à une même famille de règle. Pour compléter les expériences demandées dans le support et observer d'autres règles :
 
@@ -172,7 +172,7 @@ Les huit services modifiables utilisent maintenant `updateEntite(entite)` : l'ob
 | Equipement | /api/Equipement | Equipement |
 | Maintenance | /api/Maintenance | Maintenance |
 | Reservation | /api/Reservation | Reservation |
-| Vehicules | /api/Vehicule | Vehicule |
+| Vehicule | /api/Vehicule | Vehicule |
 | Paiement | /api/Paiement | Paiement, lectures uniquement |
 
 Pour chaque entité modifiable : `POST /AddEntite`, `GET /GetAll`, `GET /GetById/{id}`, `PUT /updateEntite`, `DELETE /deleteEntite/{id}` sous son préfixe. Paiement expose uniquement les deux GET. Exemple : `PUT /api/Agence/updateAgence` avec `idAgence` dans le corps JSON et tous les champs simples obligatoires.

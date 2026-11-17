@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,8 +14,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class Vehicules {
+public class Vehicule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +39,7 @@ public class Vehicules {
     private Agence agence;
 
     @OneToMany(mappedBy = "vehicule")
+    @JsonIgnore
     private Set<Reservation> reservations;
 
     @ManyToMany(fetch = FetchType.LAZY)

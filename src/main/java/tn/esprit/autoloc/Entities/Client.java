@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Client {
 
     @Id
@@ -38,5 +38,6 @@ public class Client {
     private LocalDate dateInscription;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.PERSIST)
+    @JsonIgnore
     private Set<Reservation> reservations;
 }

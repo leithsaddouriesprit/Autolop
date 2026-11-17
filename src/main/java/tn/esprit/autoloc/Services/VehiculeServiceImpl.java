@@ -3,8 +3,8 @@ package tn.esprit.autoloc.Services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tn.esprit.autoloc.Entities.Vehicules;
-import tn.esprit.autoloc.Repositories.VehiculesRepo;
+import tn.esprit.autoloc.Entities.Vehicule;
+import tn.esprit.autoloc.Repositories.VehiculeRepo;
 import tn.esprit.autoloc.exception.ResourceNotFoundException;
 
 import java.util.List;
@@ -12,58 +12,58 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class VehiculesServiceImpl implements IVehicules {
+public class VehiculeServiceImpl implements IVehicule {
 
-    private final VehiculesRepo vehiculesRepo;
+    private final VehiculeRepo vehiculeRepo;
 
     @Override
     @Transactional
-    public Vehicules ajouterVehicule(Vehicules vehicule) {
+    public Vehicule ajouterVehicule(Vehicule vehicule) {
         validerVehicule(vehicule);
         if (vehicule.getIdVehicule() != null) {
             throw new IllegalArgumentException("L'identifiant doit être absent lors de la création");
         }
-        return vehiculesRepo.save(vehicule);
+        return vehiculeRepo.save(vehicule);
     }
 
     @Override
     @Transactional
     public void supprimerVehicule(long idVehicule) {
-        if (!vehiculesRepo.existsById(idVehicule)) {
+        if (!vehiculeRepo.existsById(idVehicule)) {
             throw new ResourceNotFoundException("Vehicule", idVehicule);
         }
-        vehiculesRepo.deleteById(idVehicule);
+        vehiculeRepo.deleteById(idVehicule);
     }
 
     @Override
-    public List<Vehicules> recupererVehicules() {
-        return vehiculesRepo.findAll();
+    public List<Vehicule> recupererVehicules() {
+        return vehiculeRepo.findAll();
     }
 
     @Override
-    public Vehicules recupererVehiculeById(long idVehicule) {
-        return vehiculesRepo.findById(idVehicule)
+    public Vehicule recupererVehiculeById(long idVehicule) {
+        return vehiculeRepo.findById(idVehicule)
                 .orElseThrow(() -> new ResourceNotFoundException("Vehicule", idVehicule));
     }
 
     @Override
     @Transactional
-    public Vehicules updateVehicule(Vehicules vehicule) {
+    public Vehicule updateVehicule(Vehicule vehicule) {
         validerVehicule(vehicule);
         if (vehicule.getIdVehicule() == null) {
             throw new IllegalArgumentException("L'identifiant est obligatoire pour la mise à jour");
         }
-        Vehicules existant = recupererVehiculeById(vehicule.getIdVehicule());
+        Vehicule existant = recupererVehiculeById(vehicule.getIdVehicule());
         existant.setImmatriculation(vehicule.getImmatriculation());
         existant.setMarque(vehicule.getMarque());
         existant.setModele(vehicule.getModele());
         existant.setCategorie(vehicule.getCategorie());
         existant.setTarifJournalier(vehicule.getTarifJournalier());
         existant.setStatut(vehicule.getStatut());
-        return vehiculesRepo.save(existant);
+        return vehiculeRepo.save(existant);
     }
 
-    private void validerVehicule(Vehicules vehicule) {
+    private void validerVehicule(Vehicule vehicule) {
         if (vehicule == null) {
             throw new IllegalArgumentException("Vehicule obligatoire");
         }

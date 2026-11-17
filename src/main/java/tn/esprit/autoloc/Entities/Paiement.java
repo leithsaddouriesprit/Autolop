@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Paiement {
 
     @Id
@@ -31,5 +31,6 @@ public class Paiement {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_contrat")
+    @JsonBackReference("contrat-paiement")
     private Contrat contrat;
 }

@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Reservation {
 
     @Id
@@ -34,7 +33,7 @@ public class Reservation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_vehicule")
-    private Vehicules vehicule;
+    private Vehicule vehicule;
 
     @OneToOne
     @JoinColumn(name = "id_contrat", unique = true)
