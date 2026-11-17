@@ -1,13 +1,14 @@
 package tn.esprit.autoloc.Entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Contrat")
@@ -30,11 +31,13 @@ public class Contrat {
     @Column(nullable = false)
     private boolean valide;
 
-    @OneToOne(mappedBy = "contrat")
-    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_reservation")
+    @JsonBackReference("reservation-contrat")
     private Reservation reservation;
 
-    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference("contrat-paiement")
-    private Set<Paiement> paiements;
+    private List<Paiement> paiements = new ArrayList<>();
 }

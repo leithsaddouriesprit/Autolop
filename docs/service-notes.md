@@ -67,7 +67,7 @@ Les données invalides déclenchent `IllegalArgumentException` avec un message e
 
 Un objet d'entrée null est aussi refusé. Les contraintes d'unicité restent portées par la base. La validation déclarative et les opérations d'affectation entre entités appartiennent aux ateliers suivants.
 
-La relation `Contrat.paiements` possède déjà `cascade = ALL`, donc la suppression JPA d'un contrat cascade vers ses paiements. La collection n'est pas remplacée dans `updateContrat`. Une réservation qui référence encore le contrat peut néanmoins empêcher sa suppression par contrainte de clé étrangère ; les opérations de désaffectation seront traitées avec la gestion des liens. Aucune méthode de suppression en lot n'est utilisée.
+La relation `Contrat.paiements` possède `cascade = ALL` et `orphanRemoval = true` (Atelier 2), donc la suppression JPA d'un contrat cascade vers ses paiements. La collection n'est pas remplacée dans `updateContrat`, ce qui évite que l'orphanRemoval supprime les paiements. De même, `Reservation.contrat` possède `cascade = ALL` (côté Reservation, Atelier 2) : supprimer une réservation supprime son contrat puis les paiements de ce contrat. Le contrat porte la clé étrangère `id_reservation` : le supprimer seul ne touche pas la réservation. Aucune méthode de suppression en lot n'est utilisée.
 
 ## C. Messages d'erreur du conteneur
 
@@ -137,9 +137,9 @@ Cela garantit l'existence de la ressource et permet de choisir explicitement les
 ## Vérification et actions locales restantes
 
 - Relecture des neuf couples interface/implémentation et des getters/setters réels des entités.
-- Compilation Maven tentée avec Java 17 et le wrapper du dépôt. Elle est bloquée avant compilation : résolution DNS de `repo.maven.apache.org` impossible lors du téléchargement du parent Spring Boot 4.1.1. Le pom.xml existant est conservé. Aucun succès de compilation ou de démarrage n'est donc revendiqué.
-- Pas de tests automatisés ajoutés : conformément au support, les services seront exercés via REST/Postman à l'atelier 5.
-- Le démarrage avec la base MySQL locale et les expériences Sonar restent à réaliser sur le poste étudiant.
+- Compilation Maven réussie avec Java 17 et le wrapper du dépôt ; démarrage vérifié sur une base de test (`Found 9 JPA repository interfaces`, `Started AutolocApplication`).
+- Pas de tests automatisés ajoutés : conformément au support, les services sont exercés via REST/Postman à l'atelier 5 (collection `docs/AutoLoc.postman_collection.json`).
+- Les expériences SonarQube for IDE (injection par attribut, S6813 ; RuntimeException, S112) restent à réaliser dans IntelliJ sur le poste étudiant.
 
 Depuis le dossier du projet, sous Windows :
 

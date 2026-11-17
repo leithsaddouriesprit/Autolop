@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.Entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,7 +36,7 @@ public class Reservation {
     @JoinColumn(name = "id_vehicule")
     private Vehicule vehicule;
 
-    @OneToOne
-    @JoinColumn(name = "id_contrat", unique = true)
+    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("reservation-contrat")
     private Contrat contrat;
 }

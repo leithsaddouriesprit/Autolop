@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -41,6 +42,10 @@ public class Vehicule {
     @OneToMany(mappedBy = "vehicule")
     @JsonIgnore
     private Set<Reservation> reservations;
+
+    @OneToMany(mappedBy = "vehicule", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Maintenance> maintenances = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

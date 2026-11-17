@@ -29,11 +29,10 @@ public class ReservationServiceImpl implements IReservation {
     @Override
     @Transactional
     public void supprimerReservation(long idReservation) {
-        Reservation reservation = recupererReservationById(idReservation);
-        if (reservation.getContrat() != null) {
-            reservation.getContrat().setReservation(null);
+        if (!reservationRepo.existsById(idReservation)) {
+            throw new ResourceNotFoundException("Reservation", idReservation);
         }
-        reservationRepo.delete(reservation);
+        reservationRepo.deleteById(idReservation);
     }
 
     @Override

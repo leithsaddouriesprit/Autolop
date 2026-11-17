@@ -17,7 +17,7 @@ public class ReservationController {
 
     private final IReservation iReservation;
 
-    @Operation(description="ajouter une réservation dans la base")
+    @Operation(description="ajouter une réservation dans la base, avec son contrat et ses paiements éventuels")
     @PostMapping("/AddReservation")
     public Reservation ajouterReservation(@RequestBody Reservation reservation) {
         return iReservation.ajouterReservation(reservation);
